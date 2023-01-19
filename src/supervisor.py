@@ -63,7 +63,7 @@ def main(args):
 
     # Network simulation.
     logger.debug(f"Starting the network simulation [...]")
-    subprocess.run(["third_parties/netsim/build/netsim",
+    subprocess.run(["netsim/build/netsim",
                     os.path.join(args.save_dir, "out_transmitter.json"),
                     os.path.join(args.save_dir, "out_netsim.json"),
                     str(args.loss_rate/100),
