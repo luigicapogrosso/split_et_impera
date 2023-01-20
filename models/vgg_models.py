@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__ = "Federico Cunico, Luigi Capogrosso, Francesco Setti, \
-              Damiano Carra, Franco Fummi, Marco Cristani"
+__author__ = "Luigi Capogrosso, Federico Cunico, Michele Lora, \
+              Marco Cristani, Franco Fummi, Davide Quaglia"
 __version__ = "1.0.0"
-__maintainer__ = "Federico Cunico, Luigi Capogrosso"
+__maintainer__ = "Luigi Capogrosso, Federico Cunico"
 __email__ = "name.surname@univr.it"
 
 
@@ -330,7 +330,7 @@ class VGG(nn.Module):
                 continue
             if exclude_relu and isinstance(v, torch.nn.ReLU):
                 continue
-            
+
             if include_bottlenecks_deep and isinstance(v, CompressionBottleneck):
                 sizes.append(v.get_split_size(_input))
             else:
@@ -397,7 +397,7 @@ class VGGBottleneck(VGG):
         """
         idxs = self._bottleneck_idx(self.features)
         for i, module in enumerate(self.features):
-        
+
             if hasattr(module, "weight"):
                 module.weight.requires_grad = False
             if hasattr(module, "bias"):

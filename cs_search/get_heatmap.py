@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__ = "Federico Cunico, Luigi Capogrosso, Francesco Setti, \
-              Damiano Carra, Franco Fummi, Marco Cristani"
+__author__ = "Luigi Capogrosso, Federico Cunico, Michele Lora, \
+              Marco Cristani, Franco Fummi, Davide Quaglia"
 __version__ = "1.0.0"
-__maintainer__ = "Federico Cunico, Luigi Capogrosso"
+__maintainer__ = "Luigi Capogrosso, Federico Cunico"
 __email__ = "name.surname@univr.it"
 
 
