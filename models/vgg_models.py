@@ -3,10 +3,10 @@
 
 __author__ = "Luigi Capogrosso, Federico Cunico, Michele Lora, \
               Marco Cristani, Franco Fummi, Davide Quaglia"
+__license__ = "MIT"
 __version__ = "1.0.0"
 __maintainer__ = "Luigi Capogrosso, Federico Cunico"
 __email__ = "name.surname@univr.it"
-
 
 import torch
 import numpy as np
