@@ -22,3 +22,26 @@ SCNSL is a SystemC Network Simulation Library, licensed under the LGPL license. 
     $ conda install pytorch==1.7.0 torchvision==0.8.0 cudatoolkit=11.3 -c pytorch
     $ pip install -r requirements.txt
     ```
+## License ##
+
+The software files in this repository are provided under the [MIT License](./LICENSE).
+
+## Authors ##
+
+`Luigi Capogrosso`
+- Ph.D. student at the University of Verona, Italy, [luigi.capogrosso@univr.it](mailto:luigi.capogrosso@univr.it).
+
+`Federico Cunico`
+- Ph.D. student at the University of Verona, Italy, [federico.cunico@univr.it](mailto:federico.cunico@univr.it).
+
+`Michele Lora`
+- Temporary Professor at University of Verona, Italy, [michele.lora@univr.it](mailto:michele.lora@univr.it).
+
+`Marco Cristani`
+- Full Professor at University of Verona, Italy, [marco.cristani@univr.it](mailto:marco.cristani@univr.it).
+
+`Franco Fummi`
+- Full Professor at University of Verona, Italy, [franco.fummi@univr.it](mailto:franco.fummi@univr.it).
+
+`Davide Quaglia`
+- Associate Professor at University of Verona, Italy, [tiziano.villa@univr.it](mailto:tiziano.villa@univr.it).
