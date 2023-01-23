@@ -9,7 +9,7 @@ Split-Et-Impera has the following dependencies:
 - **Sphinx** (optional), for documentation generation;
 - **SCNSL** (mandatory), for simulations of networked systems.
 
-SCNSL is a SystemC Network Simulation Library, licensed under the LGPL license. It extends SystemC with capabilities for performing simulations of networked systems. Here is the [official repository](https://gitlab.com/open-kappa/scnsl), and here is the [documentation](https://open-kappa.gitlab.io/scnsl/) of the library. For further information about SCNSL, check the following [1](https://ieeexplore.ieee.org/abstract/document/4641420).
+SCNSL is a SystemC Network Simulation Library, licensed under the LGPL license. It extends SystemC with capabilities for performing simulations of networked systems. Here is the [official repository](https://gitlab.com/open-kappa/scnsl), and here is the [documentation](https://open-kappa.gitlab.io/scnsl/) of the library. For further information about SCNSL, check the [paper](https://ieeexplore.ieee.org/abstract/document/4641420).
 
 ## Installation ##
 

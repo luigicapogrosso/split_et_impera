@@ -69,7 +69,7 @@ class VGG(nn.Module):
         if init_weights:
             self._initialize_weights()
 
-    # method for the activation exctraction
+    # Method for the activation exctraction.
     def get_activations(self, x: torch.Tensor, idx: int) -> torch.Tensor:
         return self.features[:idx](x)
 
@@ -98,14 +98,13 @@ class VGG(nn.Module):
 
         if method == "gradients":
             print("Ignoring idx")
-            # raw gradients extraction
-            # preprocess the image
+            # Raw gradients extraction and preprocess the image.
             X = preprocess(img)
 
-            # we would run the model in evaluation mode
+            # We would run the model in evaluation mode.
             model.eval()
 
-            # we need to find the gradient with respect to the input image, so we need to call requires_grad_ on it
+            # We need to find the gradient with respect to the input image, so we need to call requires_grad_ on it.
             X.requires_grad_()
 
             scores = self.forward(X)
@@ -135,10 +134,9 @@ class VGG(nn.Module):
     def get_activations_image(self, img, max_batch_size=20, show=False):
 
         # https://medium.com/@stepanulyanin/implementing-grad-cam-in-pytorch-ea0937c31e82
-
         self.eval()
 
-        # batching to increase the error
+        # Batching to increase the error.
         if max_batch_size > 1:
             device = img.device
             if len(img.size()) == 4:
@@ -154,42 +152,43 @@ class VGG(nn.Module):
         pred = self(img_in)
 
         if max_batch_size > 1:
-            pred = pred[0, :].unsqueeze(0)  # 1xN
+            # 1xN.
+            pred = pred[0, :].unsqueeze(0)
 
-        # get the gradient of the output with respect to the parameters of the model
+        # Get the gradient of the output with respect to the parameters of the model.
         if pred.numel() > 1:
             import warnings
             warnings.warn("Using argmax")
             pred = pred[0, pred.argmax(dim=1)]
         pred.backward()
 
-        # pull the gradients out of the model
+        # Pull the gradients out of the model.
         gradients = self.get_activations_gradient()
 
-        # pool the gradients across the channels
+        # Pool the gradients across the channels.
         pooled_gradients = torch.mean(gradients, dim=[0, 2, 3])
 
-        # get the activations of the last convolutional layer
+        # Get the activations of the last convolutional layer.
         activations = self.get_activations(img).detach()
 
-        # weight the channels by corresponding gradients
+        # Weight the channels by corresponding gradients.
         chs = activations.shape[1]
         for i in range(chs):
             activations[:, i, :, :] *= pooled_gradients[i]
 
-        # average the channels of the activations
+        # Average the channels of the activations.
         heatmap = torch.mean(activations, dim=1).squeeze().detach().cpu().numpy()
 
-        # relu on top of the heatmap
-        # expression (2) in https://arxiv.org/pdf/1610.02391.pdf
+        # Relu on top of the heatmap, based on https://arxiv.org/pdf/1610.02391.pdf.
         heatmap = np.maximum(heatmap, 0)
 
         heatmap = torch.from_numpy(heatmap)
-        # normalize the heatmap
+        
+        # Normalize the heatmap.
         heatmap /= torch.max(heatmap) if torch.max(heatmap) != 0 else 1
 
         if show:
-            # draw the heatmap
+            # Draw the heatmap.
             import matplotlib.pyplot as plt
             plt.figure()
             plt.imshow(heatmap.squeeze())
@@ -248,7 +247,8 @@ class VGG(nn.Module):
         return res
 
     def forward_with_grads(self, x: torch.Tensor) -> Tuple[torch.Tensor, List[torch.Tensor], List[torch.nn.Module]]:
-        grads = []  # this variable will be filled only AFTER backward()
+        # This will be filled only AFTER backward().
+        grads = []  
 
         def hook(grad):
             grads.insert(0, grad)
@@ -347,13 +347,13 @@ class VGGBottleneck(VGG):
         self.num_classes = num_classes
         self.features = features
 
-        # placeholder for bottleneck
+        # Placeholder for bottleneck.
         self._bottleneck_inserted = False
         self._bottleneck_idx = lambda x: [
             idx for idx, _ in enumerate(x) if isinstance(_, CompressionBottleneck)
         ]
 
-        # placeholder for the gradients
+        # Placeholder for the gradients.
         self.gradients = None
         self.avgpool = nn.AdaptiveAvgPool2d((7, 7))
 
@@ -372,7 +372,7 @@ class VGGBottleneck(VGG):
 
     def freeze(self, exclude_bottleneck=True):
         """
-        Freeze all the weights
+        Freeze all the weights.
         """
         idxs = self._bottleneck_idx(self.features)
         for i, module in enumerate(self.features):
@@ -393,7 +393,7 @@ class VGGBottleneck(VGG):
 
     def fine_tuning_freeze(self):
         """
-        Freeze all the weights
+        Freeze all the weights.
         """
         idxs = self._bottleneck_idx(self.features)
         for i, module in enumerate(self.features):
@@ -420,20 +420,20 @@ class VGGBottleneck(VGG):
     def activations_hook(self, grad):
         self.gradients = grad
 
-    # method for the gradient extraction
+    # Method for the gradient extraction.
     def get_activations_gradient(self):
         return self.gradients
 
-    # method for the activation exctraction
+    # Method for the activation exctraction.
     def get_activations(self, x):
         if self._bottleneck_inserted:
             idxs: List[int] = self._bottleneck_idx(self.features)
-            if len(idxs) != 1:  # both less and greater than
+            # Both less and greater than.
+            if len(idxs) != 1:
                 raise NotImplementedError
             idx = idxs[0]
             if idx > len(self.features) - 1:
-                # get activation of last layer of bottleneck... even if it"s not right probably
-                print("aaaaaaaaaaaaaaaaaa not implementedddd fffffffffff")
+                # Get activation of last layer of bottleneck... even if it's not right probably.
                 raise NotImplementedError
             else:
                 up_to_bottleneck = self.features[0: idx + 1]
@@ -450,10 +450,9 @@ class VGGBottleneck(VGG):
     def get_activations_image(self, img, max_batch_size=20, show=False):
 
         # https://medium.com/@stepanulyanin/implementing-grad-cam-in-pytorch-ea0937c31e82
-
         self.eval()
 
-        # batching to increase the error
+        # Batching to increase the error.
         if max_batch_size > 1:
             device = img.device
             if len(img.size()) == 4:
@@ -469,42 +468,43 @@ class VGGBottleneck(VGG):
         pred = self(img_in)
 
         if max_batch_size > 1:
-            pred = pred[0, :].unsqueeze(0)  # 1xN
+            # 1xN.
+            pred = pred[0, :].unsqueeze(0)
 
-        # get the gradient of the output with respect to the parameters of the model
+        # Get the gradient of the output with respect to the parameters of the model.
         if pred.numel() > 1:
             import warnings
             warnings.warn("Using argmax")
             pred = pred[0, pred.argmax(dim=1)]
         pred.backward()
 
-        # pull the gradients out of the model
+        # Pull the gradients out of the model.
         gradients = self.get_activations_gradient()
 
-        # pool the gradients across the channels
+        # Pool the gradients across the channels.
         pooled_gradients = torch.mean(gradients, dim=[0, 2, 3])
 
-        # get the activations of the last convolutional layer
+        # Get the activations of the last convolutional layer.
         activations = self.get_activations(img).detach()
 
-        # weight the channels by corresponding gradients
+        # Weight the channels by corresponding gradients.
         chs = activations.shape[1]
         for i in range(chs):
             activations[:, i, :, :] *= pooled_gradients[i]
 
-        # average the channels of the activations
+        # Average the channels of the activations.
         heatmap = torch.mean(activations, dim=1).squeeze().detach().cpu().numpy()
 
-        # relu on top of the heatmap
-        # expression (2) in https://arxiv.org/pdf/1610.02391.pdf
+        # Relu on top of the heatmap, based on https://arxiv.org/pdf/1610.02391.pdf.
         heatmap = np.maximum(heatmap, 0)
 
         heatmap = torch.from_numpy(heatmap)
-        # normalize the heatmap
+        
+        # Normalize the heatmap.
         heatmap /= torch.max(heatmap) if torch.max(heatmap) != 0 else 1
 
         if show:
-            # draw the heatmap
+            # Draw the heatmap.
             import matplotlib.pyplot as plt
             plt.figure()
             plt.imshow(heatmap.squeeze())
@@ -559,7 +559,6 @@ class VGGBottleneck(VGG):
         return res
 
     def inject_bottleneck(self, configuration, bottleneck_type: Type[CompressionBottleneck], **kwargs):
-
         if sum([1 for v in configuration if v == "B_conv"]) == 1 and configuration[-1] == "B_conv":
             fake_xin = torch.rand((1, 3, 224, 224))
             feats = self.features(fake_xin).squeeze(0).shape
@@ -584,58 +583,26 @@ class VGGBottleneck(VGG):
                     continue
 
                 expected = configuration[c_idx]
-
                 # print(expected, m._get_name(), m)
 
                 expected_type = None
 
                 if expected == "B_conv":
-                    # print("SKIPPING / INSERTING Bottleneck")
-
                     prev_idx = c_idx - 1
                     if prev_idx < 0:
-                        # if previous is negative, use the next
-                        # prev = "__NEXT__"  # to trigger the "try next" mode
+                        # If previous is negative, use the next.
+                        # To trigger the "try next" mode.
+                        # prev = "__NEXT__"
                         prev = "__NEXT__"
-                        bn_in_ch = 3  # IS THE FIRST LAYER
+                        # IS THE FIRST LAYER.
+                        bn_in_ch = 3
                     else:
                         prev = configuration[c_idx - 1]
 
                     if isinstance(prev, int):
                         filters = prev
                     elif prev == "M":
-                        # Get number
-                        # ----------------------
-                        # Let F = 2 (2x2 window)
-                        # Stride, S = 2
-                        # Depth, D = 5 (depth from the previous layer)
-                        # [(I - F) / S] + 1 x D
-                        # i.e.
-                        # [(30 – 2) / 2] + 1 x D
-                        # Hin = last_conv_layer.out_channels
-                        # Padding = 0
-                        # Dilation = 1
-                        # KernelSize = 2
-                        # Stride = 2
-                        # filters = floor(
-                        #     ((Hin + 2 * Padding - Dilation * (KernelSize - 1)) / Stride) + 1
-                        # )
-
                         filters = last_conv_layer.out_channels
-
-                        # fake_xin = torch.rand(1, 3, 224, 224)
-
-                        # for jjj in range(len(self.features)):
-                        #     tmp = self.features[:jjj+1](fake_xin)
-                        #     s = tmp.shape
-                        #     print(s)
-                        #     if jjj > i:
-                        #         break
-
-                        # feats = self.features[:i+1]().squeeze(0).shape
-                        # assert feats[1] == feats[2]
-                        # filters = feats[1]  #
-
                     elif prev == "__NEXT__":
                         try:
                             next_p = configuration[c_idx + 1]
@@ -652,7 +619,7 @@ class VGGBottleneck(VGG):
                             f"This is not supported (previous = '{prev}')"
                         )
 
-                    # Currently downsampling to half. Other parameters are default
+                    # Currently downsampling to half. Other parameters are default.
                     feats = self.features[:i](torch.rand(1, 3, 224, 224)).squeeze(0).shape
                     if bn_in_ch is None:
                         bneck = bottleneck_type(
@@ -670,10 +637,13 @@ class VGGBottleneck(VGG):
                         )
                         bn_in_ch = None
 
-                    new_f.append(bneck)  # adding bneck
-                    new_f.append(m)  # and current module
+                    # Adding bneck.
+                    new_f.append(bneck)
+                    # And current module.
+                    new_f.append(m)  
 
-                    c_idx += 2  # bneck + current
+                    # Bneck + current.
+                    c_idx += 2  
 
                 elif expected == "M":
                     expected_type = nn.modules.MaxPool2d
@@ -698,7 +668,7 @@ class VGGBottleneck(VGG):
                         raise RuntimeError(
                             "Wrong bottleneck insertion. This is probably due to code error"
                         )
-                    if isinstance(expected, int):  # Conv2d layers
+                    if isinstance(expected, int):
                         if m.out_channels != expected:
                             raise RuntimeError(
                                 "Incompatible channel dimensions. This is probably due to code error"
@@ -714,7 +684,6 @@ class VGGBottleneck(VGG):
                 # print(validate[j], v, " are equal? ", validate[j] == v)
                 assert validate[j] == v, "Invalid value"
         except Exception as e:
-            # handle
             raise e
 
         self._validate_net()
@@ -722,18 +691,7 @@ class VGGBottleneck(VGG):
     def _validate_net(self):
         shape = (3, 224, 224)
         xin = torch.randn(shape).unsqueeze(0)
-        # try:
         self.forward(xin)
-        # except Exception as e:
-        #     if self._bottleneck_inserted:
-        #         idx = self._bottleneck_idx(self.features)[0]
-        #         ae = self.features[idx]
-        #         if not isinstance(ae, CompressionBottleneck):
-        #             raise e
-        #         fmap = self.features[0:idx](xin)
-        #         ae.try_fix(fmap)
-        #     else:
-        #         raise e
 
     def forward(self, x, idx=None):
         if idx is not None:
@@ -741,12 +699,12 @@ class VGGBottleneck(VGG):
 
         if self._bottleneck_inserted:
             idxs: List[int] = self._bottleneck_idx(self.features)
-            if len(idxs) != 1:  # both less and greater than
+            # Both less and greater than.
+            if len(idxs) != 1:
                 raise NotImplementedError
             idx = idxs[0]
             if idx > len(self.features) - 1:
-                # get activation of last layer of bottleneck... even if it"s not right probably
-                print("aaaaaaaaaaaaaaaaaa not implementedddd fffffffffff")
+                # Get activation of last layer of bottleneck... even if it's not right probably.
                 raise NotImplementedError
             else:
                 up_to_bottleneck = self.features[0: idx + 1]
@@ -762,12 +720,13 @@ class VGGBottleneck(VGG):
                 features = remaining(f1)
         else:
             try:
-                # N.B. where to "grep" the gradients highly depends on how the net is created.
-                # You need to get to the last conv2d
+                # N.B: Where to "grep" the gradients highly depends on how the net is created.
+                # You need to get to the last conv2d.
                 idx = 0
                 for j in reversed(range(len(self.features))):
                     if isinstance(self.features[j], torch.nn.Conv2d):
-                        idx = j+1  # activation layer after conv2d (if bn, +1)
+                        # Activation layer after conv2d (if bn, +1).
+                        idx = j+1
                         break
                 if isinstance(self.features[idx], torch.nn.BatchNorm2d):
                     idx += 1
@@ -776,15 +735,15 @@ class VGGBottleneck(VGG):
                 f1 = self.features[:idx+1](x)
 
                 if f1.requires_grad:
-                    # register the hook
+                    # Register the hook.
                     f1.register_hook(self.activations_hook)
 
-                # apply the remaining pooling
+                # Apply the remaining pooling.
                 features = self.features[idx+1:](f1)
             except NotImplementedError as e:
                 raise e
             except Exception as e:
-                # maybe bottleneck has not been inserted for real.
+                # Maybe bottleneck has not been inserted for real.
                 # raise RuntimeError("Did you set debug(model) ? You should not.")
                 features = self.features(x)
 
@@ -1011,38 +970,6 @@ def vgg19_bn_bottleneck_conv(pretrained=False, bottleneck_version="S1_v3", **kwa
 
     model.inject_bottleneck(bn, batch_norm=True)
     return model
-
-
-# if __name__ == "__main__":
-#     import torch
-#     import copy
-#     from tqdm import tqdm
-#     from src.evaluation.evaluation import activation_maps
-
-#     dev, _ = torch_import()
-#     dev = torch.device("cpu")
-#     models = []
-
-#     # models.append(vgg19_bn(pretrained=True))
-#     # models.append(vgg19(pretrained=True))
-
-#     print("Creating VGG configurations")
-#     for i in tqdm(range(len(cfg["E"]))):
-#         # if i < 11: continue
-#         vgg_struct = copy.deepcopy(cfg["E"])
-#         vgg_struct.insert(i, "B_conv")
-#         models.append(vgg19_bn_bottleneck_conv(pretrained=True, bottleneck_version=vgg_struct))
-#         # break
-
-#     # models.append(vgg19_bn_bottleneck_conv(pretrained=True, bottleneck_version="S1_v1"))
-#     # models.append(vgg19_bn_bottleneck_conv(pretrained=True, bottleneck_version="S1_v2"))
-#     # models.append(vgg19_bn_bottleneck_conv(pretrained=True, bottleneck_version="S1_v3"))
-#     # models.append(vgg19_bn_bottleneck_conv(pretrained=True, bottleneck_version="S1_v4"))
-#     # models.append(vgg19_bn_bottleneck_conv(pretrained=True, bottleneck_version="E"))
-#     for k, model in enumerate(tqdm(models)):
-#         # fake(dev, model, enable_debug_shapes=False)
-#         activation_maps(dev, model, k)
-
 
 def __test_bottleneck__():
     from src.models.bottlenecks.undercomplete_autoencoder import AutoEncoderUnderComplete
