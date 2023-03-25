@@ -33,3 +33,15 @@ Luigi Capogrosso, Federico Cunico, Michele Lora, Marco Cristani, Franco Fummi, D
 *Department of Computer Science, University of Verona, Italy*
 
 `name.surname@univr.it`
+
+## Citation ##
+
+If you use ***Split-Et-Impera**, please, cite the following paper:
+```
+@article{capogrosso2023split,
+  title={Split-Et-Impera: A Framework for the Design of Distributed Deep Learning Applications},
+  author={Capogrosso, Luigi and Cunico, Federico and Lora, Michele and Cristani, Marco and Fummi, Franco and Quaglia, Davide},
+  journal={arXiv preprint arXiv:2303.12524},
+  year={2023}
+}
+```
