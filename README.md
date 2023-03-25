@@ -36,7 +36,7 @@ Luigi Capogrosso, Federico Cunico, Michele Lora, Marco Cristani, Franco Fummi, D
 
 ## Citation ##
 
-If you use ***Split-Et-Impera**, please, cite the following paper:
+If you use [**Split-Et-Impera**](https://arxiv.org/abs/2303.12524), please, cite the following paper:
 ```
 @article{capogrosso2023split,
   title={Split-Et-Impera: A Framework for the Design of Distributed Deep Learning Applications},
