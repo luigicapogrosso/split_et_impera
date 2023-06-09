@@ -36,12 +36,15 @@ Luigi Capogrosso, Federico Cunico, Michele Lora, Marco Cristani, Franco Fummi, D
 
 ## Citation ##
 
-If you use [**Split-Et-Impera**](https://arxiv.org/abs/2303.12524), please, cite the following paper:
+If you use [**Split-Et-Impera**](https://ieeexplore.ieee.org/abstract/document/10139711), please, cite the following paper:
 ```
-@article{capogrosso2023split,
+@inproceedings{capogrosso2023split,
   title={Split-Et-Impera: A Framework for the Design of Distributed Deep Learning Applications},
   author={Capogrosso, Luigi and Cunico, Federico and Lora, Michele and Cristani, Marco and Fummi, Franco and Quaglia, Davide},
-  journal={arXiv preprint arXiv:2303.12524},
-  year={2023}
+  booktitle={2023 26th International Symposium on Design and Diagnostics of Electronic Circuits and Systems (DDECS)},
+  pages={39--44},
+  year={2023},
+  organization={IEEE}
 }
+
 ```
