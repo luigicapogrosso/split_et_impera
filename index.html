@@ -136,13 +136,13 @@
         <section class="hero teaser">
             <div class="container is-max-desktop">
                 <div class="hero-body has-text-centered">
-                    <img src="./static/images/teaser.png" alt="I-SPLIT abstract" type="image/png" style="width: 45%; height: 45%;">
+                    <img src="./static/images/teaser.png" alt="I-SPLIT abstract" type="image/png" style="width: 70%; height: 70%;">
                     <h6 class="subtitle is-6 has-text-centered">
-                        The <i>Split-Et-Impera</i> framework: <i>i)</i> Determine the saliency-based split point candidates. The inputs
-                        are fed into a neural network to extract the saliency maps using the Grad-CAM algorithm at each layer. Then, we
-                        average over all the maps to generate the final Cumulative Saliency (CS) curve with the candidate split points.
-                        <i>ii)</i> Simulate each candidate by reproducing its computation and its transmission. <i>iii)</i> Use the
-                        simulation statistics to find the best-split point satisfying the application constraints on accuracy and latency.
+                        The <i>Split-Et-Impera</i> framework: <i>i)</i> Determine the saliency-based split point candidates.
+                        The inputs are fed into a neural network to extract the saliency maps using the Grad-CAM algorithm at each layer.
+                        Then, we average over all the maps to generate the final Cumulative Saliency (CS) curve with the candidate split points.
+                        <i>ii)</i> Simulate each candidate by reproducing its computation and its transmission.
+                        <i>iii)</i> Use the simulation statistics to find the best-split point satisfying the application constraints on accuracy and latency.
                     </h6>
                 </div>
             </div>
@@ -156,17 +156,11 @@
                         <h2 class="title is-3">Abstract</h2>
                         <div class="content has-text-justified">
                             <p>
-                                Many recent pattern recognition applications rely on complex distributed architectures
-                                in which sensing and computational nodes interact together through a communication network.
-                                Deep neural networks (DNNs) play an important role in this scenario, furnishing powerful decision mechanisms,
-                                at the price of a high computational effort. Consequently, powerful state-ofthe-art DNNs are frequently split over various
-                                computational nodes, e.g., a first part stays on an embedded device and the rest on a server. Deciding where to
-                                split a DNN is a challenge in itself, making the design of deep learning applications even more complicated.
-                                Therefore, we propose <i>Split-Et-Impera</i>, a novel and practical framework that <i>i)</i> determines the set of the
-                                best-split points of a neural network based on deep network interpretability principles without performing a tedious
-                                try-andtest approach, <i>ii)</i> performs a communication-aware simulation for the rapid evaluation of different neural
-                                network rearrangements, and <i>iii)</i> suggests the best match between the quality of service requirements of the application
-                                and the performance in terms of accuracy and latency time.
+                                Many recent pattern recognition applications rely on complex distributed architectures in which sensing and computational nodes interact together through a communication network.
+                                Deep neural networks (DNNs) play an important role in this scenario, furnishing powerful decision mechanisms, at the price of a high computational effort.
+                                Consequently, powerful state-of-the-art DNNs are frequently split over various computational nodes, e.g., a first part stays on an embedded device and the rest on a server.
+                                Deciding where to split a DNN is a challenge in itself, making the design of deep learning applications even more complicated.
+                                Therefore, we propose <i>Split-Et-Impera</i>, a novel and practical framework that <i>i)</i> determines the set of the best-split points of a neural network based on deep network interpretability principles without performing a tedious try-andtest approach, <i>ii)</i> performs a communication-aware simulation for the rapid evaluation of different neural network rearrangements, and <i>iii)</i> suggests the best match between the quality of service requirements of the application and the performance in terms of accuracy and latency time.
                             </p>
                         </div>
                     </div>
