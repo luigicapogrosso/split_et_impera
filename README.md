@@ -1,6 +1,6 @@
 # Split-Et-Impera: A Framework for the Design of Distributed Deep Learning Applications #
 
-Official implementation of the paper [Split-Et-Impera: A Framework for the Design of Distributed Deep Learning Applications]() accepted at the 26th International Symposium on Design and Diagnostics of Electronic Circuits and Systems (DDECS 2023)
+Official implementation of the paper [Split-Et-Impera: A Framework for the Design of Distributed Deep Learning Applications](https://luigicapogrosso.github.io/split_et_impera/) accepted at the 26th International Symposium on Design and Diagnostics of Electronic Circuits and Systems (DDECS 2023)
 
 **Split-Et-Impera** is a novel and practical framework that *i)* determines the set of the best-split points of a neural network based on deep network interpretability principles without performing a tedious try-and-test approach, *ii)* performs a communication-aware simulation for the rapid evaluation of different neural network rearrangements, and *iii)* suggests the best match between the application's quality of service requirements and performance in terms of accuracy and latency time.
 
